@@ -6,12 +6,12 @@ import java.util.Objects;
 public class Main {
 	public static void main(String[] args) {
 		//Tests für Payment Klasse
-		System.out.println("Payment test:");
+		System.out.println("Payment KEK1:");
 		//Test für minimalen Konstruktor
 		Payment p1 = new Payment("01.01.2000", 100, "Test 1");
 
 		if (Objects.equals(p1.toString(), "Payment{date='01.01.2000', amount=100.0, description='Test 1', incomingInterest=0.0, outgoingInterest=0.0}"))
-			System.out.println("Constructor 1 Test passed successfully");
+			System.out.println("Constructor 1 KEK2 passed successfully");
 		else System.out.println("Constructor 1 Test failed");
 		//Test für vollständigen Konstruktor
 		Payment p2 = new Payment("01.01.2000", 100, "Test 2", 0.3, 0.4);

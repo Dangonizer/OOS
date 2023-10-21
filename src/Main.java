@@ -6,7 +6,7 @@ import java.util.Objects;
 public class Main {
 	public static void main(String[] args) {
 		//Tests für Payment Klasse
-		System.out.println("Payment test1:");
+		System.out.println("Payment test:");
 		//Test für minimalen Konstruktor
 		Payment p1 = new Payment("01.01.2000", 100, "Test 1");
 

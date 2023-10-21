@@ -36,7 +36,7 @@ public class Main {
 		else System.out.println("Sanity Check Test failed");
 
 		//Tests für Transfer Klasse
-		System.out.println("Transfer tests:");
+		System.out.println("Transfer KEKs:");
 		//Test für minimalen Konstruktor
 		Transfer t1 = new Transfer("01.01.2000", 100, "Test 1");
 

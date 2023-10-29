@@ -36,11 +36,9 @@ public class Payment extends Transaction {
     }
 
 
-    //Konstruktor mit minimalen Angaben (Datum, Betrag, Beschreibung)
+    //Minimal Constructor
     public Payment(String date, double amount, String description) {
-        this.date = date;
-        this.amount = amount;
-        this.description = description;
+        super(date, amount, description);
     }
 
     //Konstruktor mit vollen Angaben (Datum, Betrag, Beschreibung, Einzalungszinsen, Auszahlungszinsen)
@@ -62,12 +60,30 @@ public class Payment extends Transaction {
     //Funktion gibt alle Attribute des Objektes als String zurück
     @Override
     public String toString() {
-        return "Payment{" +
-                "date='" + date + '\'' +
-                ", amount=" + amount +
-                ", description='" + description + '\'' +
+        return super.toString() +
                 ", incomingInterest=" + incomingInterest +
-                ", outgoingInterest=" + outgoingInterest +
-                '}';
+                ", outgoingInterest=" + outgoingInterest;
+    }
+
+    @Override
+    public double calculate() {
+        if (amount >= 0)
+        {
+            return amount - amount * incomingInterest;
+        }
+        else
+            return amount + amount * outgoingInterest;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Payment)) {
+            return false;
+        }
+        Payment p = (Payment) o;
+        return super.equals((Transaction)o) && incomingInterest == p.incomingInterest && outgoingInterest == p.outgoingInterest;
     }
 }

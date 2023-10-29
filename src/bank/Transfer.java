@@ -41,9 +41,7 @@ public class Transfer extends Transaction {
 
     //Minimaler Konstruktor (Datum, Betrag, Beschreibung)
     public Transfer(String date, double amount, String description) {
-        this.date = date;
-        this.setAmount(amount);
-        this.description = description;
+        super(date, amount, description);
     }
 
     //Vollständiger Konstruktor (Datum, Betrag, Beschreibung, Sender, Empfänger)
@@ -65,12 +63,25 @@ public class Transfer extends Transaction {
     //Funktion gibt alle Attribute des Objekts als String zurück
     @Override
     public String toString() {
-        return "Transfer{" +
-                "date='" + date + '\'' +
-                ", amount=" + amount +
-                ", description='" + description + '\'' +
+        return super.toString() +
                 ", sender='" + sender + '\'' +
-                ", recipient='" + recipient + '\'' +
-                '}';
+                ", recipient='" + recipient + '\'';
+    }
+
+    @Override
+    public double calculate() {
+        return amount;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == this) {
+            return true;
+        }
+        if (!(o instanceof Transfer)) {
+            return false;
+        }
+        Transfer t = (Transfer) o;
+        return super.equals((Transaction)o) && sender == t.sender && recipient == t.recipient;
     }
 }

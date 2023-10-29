@@ -11,25 +11,25 @@ public class Main {
 
         //Test für minimalen Konstruktor
         Payment p1 = new Payment("01.01.2000", 100, "Constructor with 3 parameters");
-        System.out.println(p1.toString());
+        System.out.println(p1);
         System.out.println();
 
         //Test für vollständigen Konstruktor
         Payment p2 = new Payment("01.01.2000", -100, "Constructor with all parameters", 0.3, 0.4);
-        System.out.println(p2.toString());
+        System.out.println(p2);
         System.out.println();
 
         //Test für Calculate
         System.out.println(p2.calculate());
         p2.setAmount(300);
-        System.out.println(p2.toString());
+        System.out.println(p2);
         System.out.println(p2.calculate());
         System.out.println();
 
         //Test für Copy Konstruktor
         Payment p3 = new Payment(p2);
         p2.setAmount(200);
-        System.out.println(p3.toString());
+        System.out.println(p3);
         System.out.println();
 
         //Test für equals
@@ -41,8 +41,8 @@ public class Main {
         System.out.println();
 
         //Test für Sanity Checks
-        Payment p4 = new Payment("01.01.2000", 100, "Test 5", 2, 2);
-        System.out.println(p4.toString());
+        Payment p4 = new Payment("01.01.2000", 100, "Sanity Check", 2, 2);
+        System.out.println(p4);
 
 
         //Tests für Transfer Klasse

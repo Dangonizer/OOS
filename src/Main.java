@@ -28,14 +28,14 @@ public class Main {
 
         //Test für Copy Konstruktor
         Payment p3 = new Payment(p2);
-        p2.setAmount(200);
+        p2.setIncomingInterest(0.5);
         System.out.println(p3);
         System.out.println();
 
         //Test für equals
         if (!(p3.equals(p2)))
             System.out.println("False");
-        p2.setAmount(300);
+        p2.setIncomingInterest(0.3);
         if (p3.equals(p2))
             System.out.println("True");
         System.out.println();
@@ -66,14 +66,14 @@ public class Main {
 
         //Test für Copy Konstruktor
         Transfer t3 = new Transfer(t2);
-        t2.setAmount(200);
+        t2.setSender("wrong sender");
         System.out.println(t3);
         System.out.println();
 
         //Test für equals
         if (!(t3.equals(t2)))
             System.out.println("False");
-        t2.setAmount(100);
+        t2.setSender("sender");
         if (t3.equals(t2))
             System.out.println("True");
         System.out.println();

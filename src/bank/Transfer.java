@@ -82,6 +82,6 @@ public class Transfer extends Transaction {
             return false;
         }
         Transfer t = (Transfer) o;
-        return super.equals((Transaction)o) && sender == t.sender && recipient == t.recipient;
+        return super.equals((Transaction)o) && sender.equals(t.sender) && recipient.equals(t.recipient);
     }
 }

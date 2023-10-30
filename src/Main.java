@@ -4,6 +4,7 @@ import java.util.Objects;
 
 /**
  * Main class for testing functionality
+ *
  * @author Kevin Schier
  * @version 1.1
  */

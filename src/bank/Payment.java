@@ -2,6 +2,7 @@ package bank;
 
 /**
  * This class manages withdrawals and deposits
+ *
  * @author Kevin Schier
  * @version 1.1
  */
@@ -18,6 +19,7 @@ public class Payment extends Transaction {
 
     /**
      * Returns {@link #incomingInterest}
+     *
      * @return Value of incomingInterest
      */
     public double getIncomingInterest() {
@@ -26,6 +28,7 @@ public class Payment extends Transaction {
 
     /**
      * Sets incomingInterest if value is in allowed range(0-1), otherwise writes error to console and does not set value.
+     *
      * @param incomingInterest Interest rate that should be set (0-1 allowed)
      */
     public void setIncomingInterest(double incomingInterest) {
@@ -38,6 +41,7 @@ public class Payment extends Transaction {
 
     /**
      * Returns outgoing interest rate.
+     *
      * @return
      */
     public double getOutgoingInterest() {
@@ -46,6 +50,7 @@ public class Payment extends Transaction {
 
     /**
      * Sets outgoingInterest if value is in allowed range(0-1), otherwise writes error to console and does not set value.
+     *
      * @param outgoingInterest Interest rate that should be set (0-1 allowed)
      */
     public void setOutgoingInterest(double outgoingInterest) {
@@ -59,8 +64,9 @@ public class Payment extends Transaction {
 
     /**
      * Constructor with minimal amount of parameters.
-     * @param date Date in "DD.MM:YYYY" format
-     * @param amount Amount of the payment
+     *
+     * @param date        Date in "DD.MM:YYYY" format
+     * @param amount      Amount of the payment
      * @param description Description of payment
      */
     public Payment(String date, double amount, String description) {
@@ -69,9 +75,10 @@ public class Payment extends Transaction {
 
     /**
      * Full constructor that sets all attributes
-     * @param date Date in "DD.MM:YYYY" format
-     * @param amount Amount of the payment
-     * @param description Description of payment
+     *
+     * @param date             Date in "DD.MM:YYYY" format
+     * @param amount           Amount of the payment
+     * @param description      Description of payment
      * @param incomingInterest Decimal interest rate for incoming payments
      * @param outgoingInterest Decimal interest rate for outgoing payments
      */
@@ -83,6 +90,7 @@ public class Payment extends Transaction {
 
     /**
      * Copies content of parameter {@link Payment} object to created object
+     *
      * @param payment Object that will be copied
      */
     public Payment(Payment payment) {
@@ -95,6 +103,7 @@ public class Payment extends Transaction {
 
     /**
      * Returns all attributes as string
+     *
      * @return String of attributes
      */
     @Override
@@ -106,20 +115,20 @@ public class Payment extends Transaction {
 
     /**
      * Calculates amount after factoring in interest rates
+     *
      * @return New amount after interest has been factored in
      */
     @Override
     public double calculate() {
-        if (amount >= 0)
-        {
+        if (amount >= 0) {
             return amount - amount * incomingInterest;
-        }
-        else
+        } else
             return amount + amount * outgoingInterest;
     }
 
     /**
      * Checks object and parameter o for equal contents
+     *
      * @param o Object that is compared
      * @return Returns true if contents of both objects are the same
      */
@@ -132,6 +141,6 @@ public class Payment extends Transaction {
             return false;
         }
         Payment p = (Payment) o;
-        return super.equals((Transaction)o) && incomingInterest == p.incomingInterest && outgoingInterest == p.outgoingInterest;
+        return super.equals((Transaction) o) && incomingInterest == p.incomingInterest && outgoingInterest == p.outgoingInterest;
     }
 }

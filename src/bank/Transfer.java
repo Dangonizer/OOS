@@ -28,7 +28,7 @@ public class Transfer extends Transaction {
 
     /**
      * Returns recipient
-     * @return recipient
+     * @return Returns recipient
      */
     public String getRecipient() {
         return recipient;
@@ -122,6 +122,7 @@ public class Transfer extends Transaction {
 
     /**
      * Checks object and parameter o for equal contents
+     *
      * @param o Object that is compared
      * @return Returns true if contents of both objects are the same
      */

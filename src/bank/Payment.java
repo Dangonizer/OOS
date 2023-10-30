@@ -6,17 +6,28 @@ package bank;
  * @version 1.1
  */
 public class Payment extends Transaction {
-    //
+    /**
+     * Incoming interest rate as decimal number. Allowed values are 0-1
+     */
     private double incomingInterest;
-    //Zinsen bei Auszahlung als Dezimalwert. Erlaubter Wertebereich 0-1.
+
+    /**
+     * Incoming interest rate as decimal number. Allowed values are 0-1
+     */
     private double outgoingInterest;
 
-    //Public Getter für die Einzahlungszinsen
+    /**
+     * Returns {@link #incomingInterest}
+     * @return Value of incomingInterest
+     */
     public double getIncomingInterest() {
         return incomingInterest;
     }
 
-    //Public Setter für die Einzahlungszinsen. Checkt Nutzerinput auf valide Werte (0-1)
+    /**
+     * Sets incomingInterest if value is in allowed range(0-1), otherwise writes error to console and does not set value.
+     * @param incomingInterest Interest rate that should be set (0-1 allowed)
+     */
     public void setIncomingInterest(double incomingInterest) {
         if (incomingInterest < 0 || incomingInterest > 1) {
             System.out.println("Error: No incoming interest rates bellow 0 and above 100% allowed for transfers.");
@@ -25,12 +36,18 @@ public class Payment extends Transaction {
         this.incomingInterest = incomingInterest;
     }
 
-    //Public Getter für die Auszahlungszinsen
+    /**
+     * Returns outgoing interest rate.
+     * @return
+     */
     public double getOutgoingInterest() {
         return outgoingInterest;
     }
 
-    //Public Setter für die Auszahlungszinsen. Checkt Nutzerinput auf valide Werte (0-1)
+    /**
+     * Sets outgoingInterest if value is in allowed range(0-1), otherwise writes error to console and does not set value.
+     * @param outgoingInterest Interest rate that should be set (0-1 allowed)
+     */
     public void setOutgoingInterest(double outgoingInterest) {
         if (outgoingInterest < 0 || outgoingInterest > 1) {
             System.out.println("Error: No outgoing interest rates bellow 0 and above 100% allowed for transfers.");
@@ -40,19 +57,34 @@ public class Payment extends Transaction {
     }
 
 
-    //Minimal Constructor
+    /**
+     * Constructor with minimal amount of parameters.
+     * @param date Date in "DD.MM:YYYY" format
+     * @param amount Amount of the payment
+     * @param description Description of payment
+     */
     public Payment(String date, double amount, String description) {
         super(date, amount, description);
     }
 
-    //Konstruktor mit vollen Angaben (Datum, Betrag, Beschreibung, Einzalungszinsen, Auszahlungszinsen)
+    /**
+     * Full constructor that sets all attributes
+     * @param date Date in "DD.MM:YYYY" format
+     * @param amount Amount of the payment
+     * @param description Description of payment
+     * @param incomingInterest Decimal interest rate for incoming payments
+     * @param outgoingInterest Decimal interest rate for outgoing payments
+     */
     public Payment(String date, double amount, String description, double incomingInterest, double outgoingInterest) {
         this(date, amount, description);
         this.setIncomingInterest(incomingInterest);
         this.setOutgoingInterest(outgoingInterest);
     }
 
-    //Copy Konstruktor
+    /**
+     * Copies content of parameter {@link Payment} object to created object
+     * @param payment Object that will be copied
+     */
     public Payment(Payment payment) {
         this.date = payment.date;
         this.amount = payment.amount;
@@ -61,7 +93,10 @@ public class Payment extends Transaction {
         this.outgoingInterest = payment.outgoingInterest;
     }
 
-    //Funktion gibt alle Attribute des Objektes als String zurück
+    /**
+     * Returns all attributes as string
+     * @return String of attributes
+     */
     @Override
     public String toString() {
         return super.toString() +
@@ -69,6 +104,10 @@ public class Payment extends Transaction {
                 ", outgoingInterest=" + outgoingInterest;
     }
 
+    /**
+     * Calculates amount after factoring in interest rates
+     * @return New amount after interest has been factored in
+     */
     @Override
     public double calculate() {
         if (amount >= 0)
@@ -79,6 +118,11 @@ public class Payment extends Transaction {
             return amount + amount * outgoingInterest;
     }
 
+    /**
+     * Checks object and parameter o for equal contents
+     * @param o Object that is compared
+     * @return Returns true if contents of both objects are the same
+     */
     @Override
     public boolean equals(Object o) {
         if (o == this) {

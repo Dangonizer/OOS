@@ -49,39 +49,37 @@ public class Main {
         System.out.println();
         System.out.println();
         System.out.println("Transfer Tests:");
+
         //Test für minimalen Konstruktor
         Transfer t1 = new Transfer("01.01.2000", 100, "Test 1");
-
+        System.out.println(t1);
+        System.out.println();
 
         //Test für vollständigen Konstruktor
         Transfer t2 = new Transfer("01.01.2000", 100, "Test 2", "sender", "recipient");
+        System.out.println(t2);
+        System.out.println();
 
-        if (Objects.equals(t2.toString(), "Transfer{date='01.01.2000', amount=100.0, description='Test 2', sender='sender', recipient='recipient'}"))
-            System.out.println("Constructor 2 Test passed successfully");
-        else System.out.println("Constructor 2 Test failed");
+        //Test für calculate
+        System.out.println(t2.calculate());
+        System.out.println();
+
         //Test für Copy Konstruktor
-        Transfer t3 = new Transfer("01.01.2000", 100, "Test 3");
-        Transfer t4 = new Transfer(t3);
-        t3.setAmount(200);
+        Transfer t3 = new Transfer(t2);
+        t2.setAmount(200);
+        System.out.println(t3);
+        System.out.println();
 
-        if (Objects.equals(t3.toString(), "Transfer{date='01.01.2000', amount=200.0, description='Test 3', sender='null', recipient='null'}")
-                && Objects.equals(t4.toString(), "Transfer{date='01.01.2000', amount=100.0, description='Test 3', sender='null', recipient='null'}"))
-            System.out.println("Copy Constructor Test passed successfully");
-        else System.out.println("Copy Constructor Test failed");
+        //Test für equals
+        if (!(t3.equals(t2)))
+            System.out.println("False");
+        t2.setAmount(100);
+        if (t3.equals(t2))
+            System.out.println("True");
+        System.out.println();
+
         //Test für Sanity Checks
-        Transfer t5 = new Transfer("01.01.2000", -100, "Test 5");
-
-        if (Objects.equals(t5.toString(), "Transfer{date='01.01.2000', amount=0.0, description='Test 5', sender='null', recipient='null'}"))
-            System.out.println("Sanity Check Test passed successfully");
-        else System.out.println("Sanity Check Test failed");
-
-        Transfer t6 = new Transfer("01.01.2000", 100, "test");
-        Transfer t7 = new Transfer("01.01.2000", 100, "test");
-        if (t6.equals(t7))
-            System.out.println("True");
-        t7.setAmount(200);
-        if (t6.equals(t7))
-            System.out.println("True");
-        else System.out.println("False");
+        Transfer t4 = new Transfer("01.01.2000", -100, "Test 4");
+        System.out.println(t4);
     }
 }

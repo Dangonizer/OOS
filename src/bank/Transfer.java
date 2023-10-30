@@ -1,6 +1,10 @@
 package bank;
 
-//Repräsentiert Überweisungen
+/**
+ * This class manages transfers.
+ * @author Kevin Schier
+ * @version 1.1
+ */
 public class Transfer extends Transaction {
 
     //Name des Senders

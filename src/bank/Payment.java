@@ -1,6 +1,10 @@
 package bank;
 
-//Repräsentiert Ein und Auszahlungen
+/**
+ * This class manages withdrawals and deposits
+ * @author Kevin Schier
+ * @version 1.1
+ */
 public class Payment extends Transaction {
     //
     private double incomingInterest;

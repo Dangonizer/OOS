@@ -1,5 +1,10 @@
 package bank;
 
+/**
+ * Superclass for {@link Payment} and {@link Transfer}. Implements {@link CalculateBill}.
+ * @author Kevin Schier
+ * @version 1.0
+ */
 public abstract class Transaction implements CalculateBill {
     //Datum als string in Format DD.MM.YYYY
     String date;

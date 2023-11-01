@@ -96,7 +96,7 @@ public class Main {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    b1.containsTransaction("700",t1);
+
 
     }
 }

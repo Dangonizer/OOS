@@ -275,6 +275,13 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
-        return null;
+        List<Transaction> transactions = new ArrayList<>(getTransactions(account));
+        if (transactions.isEmpty())
+            return transactions;
+        if (positive)
+            transactions.removeIf(t -> t.calculate() < 0);
+        else
+            transactions.removeIf(t -> t.calculate() >= 0);
+        return transactions;
     }
 }

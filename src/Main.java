@@ -1,4 +1,5 @@
 import bank.*;
+import jdk.jfr.StackTrace;
 
 import java.util.Objects;
 
@@ -86,5 +87,16 @@ public class Main {
         //Test für Sanity Checks
         Transfer t4 = new Transfer("01.01.2000", -100, "Test 4");
         System.out.println(t4);
+
+
+        PrivateBank b1 = new PrivateBank("Bank1", 0.5, 0.4);
+
+        try {
+            b1.createAccount("Account1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    b1.containsTransaction("700",t1);
+
     }
 }

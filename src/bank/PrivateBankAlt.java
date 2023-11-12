@@ -4,8 +4,7 @@ import bank.exceptions.*;
 
 import java.util.*;
 
-
-public class PrivateBank implements Bank {
+public class PrivateBankAlt implements Bank {
     /**
      * Name of the bank.
      */
@@ -107,10 +106,10 @@ public class PrivateBank implements Bank {
      * @param incomingInterest Incoming interest rate
      * @param outgoingInterest Outgoing interest rate
      */
-    public PrivateBank(String name, double incomingInterest, double outgoingInterest) {
+    public PrivateBankAlt(String name, double incomingInterest, double outgoingInterest) {
         this.name = name;
-        this.setIncomingInterest(incomingInterest);
-        this.setOutgoingInterest(outgoingInterest);
+        this.incomingInterest = incomingInterest;
+        this.outgoingInterest = outgoingInterest;
     }
 
     /**
@@ -118,7 +117,7 @@ public class PrivateBank implements Bank {
      *
      * @param bank Object to be copied
      */
-    public PrivateBank(PrivateBank bank) {
+    public PrivateBankAlt(PrivateBankAlt bank) {
         this(bank.name, bank.incomingInterest, bank.outgoingInterest);
     }
 
@@ -137,7 +136,7 @@ public class PrivateBank implements Bank {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        PrivateBank that = (PrivateBank) o;
+        PrivateBankAlt that = (PrivateBankAlt) o;
         return Double.compare(that.incomingInterest, incomingInterest) == 0 && Double.compare(that.outgoingInterest, outgoingInterest) == 0 && Objects.equals(name, that.name) && Objects.equals(accountsToTransactions, that.accountsToTransactions);
     }
 
@@ -205,8 +204,7 @@ public class PrivateBank implements Bank {
                 ((Payment) transaction).setIncomingInterest(incomingInterest);
                 ((Payment) transaction).setOutgoingInterest(outgoingInterest);
             }
-        }
-        else if (accountsToTransactions.get(account).contains(transaction))
+        } else if (accountsToTransactions.get(account).contains(transaction))
             throw new TransactionAlreadyExistException("Error: Transaction already exists.");
         else accountsToTransactions.get(account).add(transaction);
     }
@@ -254,7 +252,13 @@ public class PrivateBank implements Bank {
         if (!accountsToTransactions.containsKey(account))
             return balance;
         for (Transaction t : accountsToTransactions.get(account)) {
-            balance += t.calculate();
+            if (t instanceof Payment p) {
+                balance += p.calculate();
+            } else if (t instanceof Transfer tr) {
+                if (tr.getSender().equals(account))
+                    balance -= tr.calculate();
+                else balance += tr.calculate();
+            }
         }
         return balance;
     }
@@ -284,7 +288,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactionsSorted(String account, boolean asc) {
-        if (!accountsToTransactions.containsKey(account)){
+        if (!accountsToTransactions.containsKey(account)) {
             return new ArrayList<Transaction>();
         }
         List<Transaction> trans = new ArrayList<>(accountsToTransactions.get(account));
@@ -308,7 +312,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public List<Transaction> getTransactionsByType(String account, boolean positive) {
-        if (!accountsToTransactions.containsKey(account)){
+        if (!accountsToTransactions.containsKey(account)) {
             return new ArrayList<Transaction>();
         }
         List<Transaction> transactions = new ArrayList<>(getTransactions(account));

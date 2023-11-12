@@ -1,5 +1,8 @@
 package bank;
 
+import bank.exceptions.TransactionAttributeException;
+import bank.exceptions.TransactionInvalidValueException;
+
 /**
  * This class manages withdrawals and deposits
  *
@@ -32,17 +35,23 @@ public class Payment extends Transaction {
      * @param incomingInterest Interest rate that should be set (0-1 allowed)
      */
     public void setIncomingInterest(double incomingInterest) {
-        if (incomingInterest < 0 || incomingInterest > 1) {
-            System.out.println("Error: No incoming interest rates bellow 0 and above 100% allowed for transfers.");
+        try {
+            if (incomingInterest < 0 || incomingInterest > 1) {
+                throw new TransactionInvalidValueException("Error: No incoming interest rates bellow 0 and above 100% allowed for transfers.");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
             return;
         }
+
         this.incomingInterest = incomingInterest;
     }
 
     /**
      * Returns outgoing interest rate.
      *
-     * @return
+     * @return Outgoing interest rate
      */
     public double getOutgoingInterest() {
         return outgoingInterest;
@@ -54,8 +63,13 @@ public class Payment extends Transaction {
      * @param outgoingInterest Interest rate that should be set (0-1 allowed)
      */
     public void setOutgoingInterest(double outgoingInterest) {
-        if (outgoingInterest < 0 || outgoingInterest > 1) {
-            System.out.println("Error: No outgoing interest rates bellow 0 and above 100% allowed for transfers.");
+        try {
+            if (outgoingInterest < 0 || outgoingInterest > 1) {
+                throw new TransactionInvalidValueException("Error: No outgoing interest rates bellow 0 and above 100% allowed for transfers.");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
             return;
         }
         this.outgoingInterest = outgoingInterest;

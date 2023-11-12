@@ -1,5 +1,7 @@
 package bank;
 
+import bank.exceptions.TransactionInvalidValueException;
+
 /**
  * This class manages transfers.
  * @author Kevin Schier
@@ -10,12 +12,12 @@ public class Transfer extends Transaction {
     /**
      * Name of sender
      */
-    private String sender;
+    protected String sender;
 
     /**
      * Name of recipient
      */
-    private String recipient;
+    protected String recipient;
 
 
     /**
@@ -40,8 +42,13 @@ public class Transfer extends Transaction {
      */
     @Override
     public void setAmount(double amount) {
-        if (amount < 0) {
-            System.out.println("Error: No negative amounts allowed for transfers.");
+        try {
+            if (amount < 0) {
+                throw new TransactionInvalidValueException("Error: No negative amounts allowed for transfers.");
+            }
+        }
+        catch (Exception e){
+            e.printStackTrace();
             return;
         }
         this.amount = amount;

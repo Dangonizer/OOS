@@ -219,6 +219,41 @@ public class Main {
 
         System.out.println("\n\nTest balance method of Private bank alt\n\n");
 
+        PrivateBankAlt balt = new PrivateBankAlt("Bank1", 0.5, 0.4);
 
+        try {
+            balt.createAccount("Account1");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            balt.addTransaction("Account1", new Transfer("01.01.2000", 200, "T1", "Account1", "r1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            balt.addTransaction("Account1", new Payment("01.01.2000", 400, "P1", 0.5, 0.4));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try {
+            balt.addTransaction("Account1", new Transfer("01.01.2000", 300, "T2", "s1", "Account1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        try{
+            balt.addTransaction("Account1", new Payment("01.01.2000", -100, "P2", 0.5, 0.4));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(balt);
+
+        //Expect -200 + 400 * 0.5 + 300 -100 + 1,4 = 160
+        System.out.println(balt.getAccountBalance("Account1"));
     }
 }

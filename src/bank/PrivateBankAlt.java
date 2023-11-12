@@ -197,16 +197,24 @@ public class PrivateBankAlt implements Bank {
     public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException {
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("Error: Account " + account + " does not exist.");
-        else if (transaction instanceof Payment) {
-            if (((Payment) transaction).getIncomingInterest() < 0 || ((Payment) transaction).getIncomingInterest() > 0 || ((Payment) transaction).getOutgoingInterest() < 0 || ((Payment) transaction).getOutgoingInterest() > 0)
+        if (transaction instanceof Payment p) {
+            if (p.getIncomingInterest() < 0 || p.getIncomingInterest() > 1 || p.getOutgoingInterest() < 0 || p.getOutgoingInterest() > 1)
                 throw new TransactionAttributeException("Error: Invalid value for interest rates.");
             else {
-                ((Payment) transaction).setIncomingInterest(incomingInterest);
-                ((Payment) transaction).setOutgoingInterest(outgoingInterest);
+                p.setIncomingInterest(incomingInterest);
+                p.setOutgoingInterest(outgoingInterest);
+                if (accountsToTransactions.get(account).contains(transaction))
+                    throw new TransactionAlreadyExistException("Error: Transaction already exists.");
+                accountsToTransactions.get(account).add(p);
             }
-        } else if (accountsToTransactions.get(account).contains(transaction))
-            throw new TransactionAlreadyExistException("Error: Transaction already exists.");
-        else accountsToTransactions.get(account).add(transaction);
+        }
+        if (transaction instanceof Transfer t) {
+            if (t.getAmount() < 0)
+                throw new TransactionAttributeException("Error: Invalid value for interest rates.");
+            if (accountsToTransactions.get(account).contains(transaction))
+                throw new TransactionAlreadyExistException("Error: Transaction already exists.");
+            accountsToTransactions.get(account).add(t);
+        }
     }
 
     /**

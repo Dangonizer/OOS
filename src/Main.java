@@ -20,7 +20,8 @@ public class Main {
         Transfer t0 = new Transfer("01.01.2000", -200, "T1", "s1", "r1");
         Payment p0 = new Payment("01.01.2000", -200, "T1", 1.1, 1.2);
 
-
+        System.out.println(t0);
+        System.out.println(p0);
 
 
         System.out.println("\n\nCreate banks and test sanity checks + equals\n\n");
@@ -60,7 +61,7 @@ public class Main {
 
         System.out.println("\n\nTest all methods of Private bank\n\n");
 
-        //Create Account
+        //Create account
         try {
             b1.createAccount("Account1");
         } catch (Exception e) {
@@ -75,7 +76,72 @@ public class Main {
             e.printStackTrace();
         }
 
+        //Create account with transactions
+        try {
+            b1.createAccount("Account2",t1);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
+        System.out.println(b1);
+
+        List <Transaction> t2 = new ArrayList<>();
+        t2.add(new IncomingTransfer("01.01.2000",400,"T1","s2","r2"));
+
+        try {
+            b1.createAccount("Account2",t2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
+
+        //Add transaction
+
+        //No Account
+        try {
+            b1.addTransaction("Account3",new IncomingTransfer("01.01.2000",200,"T1","s1","r1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
+
+        //No Transaction
+        try {
+            b1.addTransaction("Account2",new IncomingTransfer("01.01.2000",200,"T1","s1","r1"));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
+
+        //Invalid Transaction
+        try {
+            b1.addTransaction("Account2",new Payment("01.01.2000",300,"P1",2,3));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
+
+        //Valid Transaction
+        try {
+            b1.addTransaction("Account2",new Payment("01.01.2000",300,"P2",0.8,0.6));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
+
+        //Duplicate Transaction
+        try {
+            b1.addTransaction("Account2",new Payment("01.01.2000",300,"P2",0.8,0.6));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        System.out.println(b1);
 
 
 

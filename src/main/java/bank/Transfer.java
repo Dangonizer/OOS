@@ -79,6 +79,8 @@ public class Transfer extends Transaction {
      */
     public Transfer(String date, double amount, String description) {
         super(date, amount, description);
+        this.sender = "";
+        this.recipient = "";
     }
 
     /**

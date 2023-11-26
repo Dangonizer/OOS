@@ -3,15 +3,17 @@ import bank.exceptions.AccountAlreadyExistsException;
 import bank.exceptions.AccountDoesNotExistException;
 import bank.exceptions.TransactionAlreadyExistException;
 import bank.exceptions.TransactionDoesNotExistException;
-import org.junit.jupiter.api.*;
+import org.apache.commons.io.FileUtils;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.Comparator;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -54,16 +56,12 @@ public class PrivateBankTest {
 
     @AfterEach
     public void removeFiles() {
-        Path pathToBeDeleted = Paths.get(DIRECTORY);
+        File pathToBeDeleted = new File(DIRECTORY);
         try {
-            Files.walk(pathToBeDeleted)
-                    .sorted(Comparator.reverseOrder())
-                    .map(Path::toFile)
-                    .forEach(File::delete);
+            FileUtils.deleteDirectory(pathToBeDeleted);
         } catch (Exception e) {
             fail("Konnte Dateien nicht löschen!", e);
         }
-        bank = null;
     }
 
     @Test
@@ -75,14 +73,8 @@ public class PrivateBankTest {
     }
 
     @Test
-    public void testCopyConstructor() {
-        PrivateBank bank2;
-        try {
-            bank2 = new PrivateBank(bank);
-        } catch (Exception e) {
-            fail("Copy-Konstruktor wirft Exception!", e);
-            return;
-        }
+    public void testCopyConstructor() throws IOException {
+        PrivateBank bank2 = new PrivateBank(bank);
         assertEquals(bank, bank2);
         bank2.setName("Testbank 2");
         assertNotEquals(bank, bank2);
@@ -108,14 +100,23 @@ public class PrivateBankTest {
         assertDoesNotThrow(() -> bank.createAccount(accountName));
         assertThrows(AccountAlreadyExistsException.class, () -> bank.createAccount(accountName));
         // check if account exist on file system
-        assertTrue(Files.exists(Paths.get(DIRECTORY, accountName + ".json")));
+        assertTrue(Files.exists(Paths.get(DIRECTORY + "/" + accountName + ".json")));
+    }
+
+    @ParameterizedTest
+    @ValueSource(strings = {"newAccount1", "newAccount2", "newAccount3"})
+    public void testCreateAccountWithTransactions(String accountName) {
+        List<Transaction> transactions = bank.getTransactions("Account1");
+        assertDoesNotThrow(() -> bank.createAccount(accountName, transactions));
+        assertThrows(AccountAlreadyExistsException.class, () -> bank.createAccount(accountName, transactions));
+        // check if account exist on file system
+        assertTrue(Files.exists(Paths.get(DIRECTORY + "/" + accountName + ".json")));
     }
 
     @Test
     public void testAddTransaction() {
         assertDoesNotThrow(() -> bank.addTransaction("Account1", new Payment("01.01.2020", 100, "AC1 - Payment5")));
         assertThrows(TransactionAlreadyExistException.class, () -> bank.addTransaction("Account1", new Payment("01.01.2020", 100, "AC1 - Payment5")));
-        // check if account still exists on file system
         assertTrue(Files.exists(Paths.get(DIRECTORY, "Account1.json")));
         assertThrows(AccountDoesNotExistException.class, () -> bank.addTransaction("ExistiertNicht", new Payment("01.01.2020", 100, "ExistiertNicht - Payment6")));
     }
@@ -126,11 +127,8 @@ public class PrivateBankTest {
         Payment p = (Payment) bank.getTransactions("Account1").get(0);
         assertDoesNotThrow(() -> bank.removeTransaction("Account1", p));
         assertEquals(2, bank.getTransactions("Account1").size());
-
         assertThrows(TransactionDoesNotExistException.class, () -> bank.removeTransaction("Account1", new Payment("12.12.2012", 123, "ExistiertNicht")));
         assertThrows(AccountDoesNotExistException.class, () -> bank.removeTransaction("ExistiertNicht", p));
-
-        // check if account still exists on file system
         assertTrue(Files.exists(Paths.get(DIRECTORY, "Account1.json")));
     }
 
@@ -163,17 +161,17 @@ public class PrivateBankTest {
 
     @Test
     public void testGetTransactionsSorted() {
+
         List<Transaction> transactions = bank.getTransactionsSorted("Account1", true);
         assertEquals(3, transactions.size());
         assertEquals("AC1 - OutgoingTransfer1", transactions.get(0).getDescription());
         assertEquals("AC1 - Payment1", transactions.get(1).getDescription());
         assertEquals("AC1 - IncomingTransfer1", transactions.get(2).getDescription());
 
-
         transactions = bank.getTransactionsSorted("Account2", false);
         assertEquals(2, transactions.size());
-        assertEquals("AC2 - Payment2", transactions.get(0).getDescription());
-        assertEquals("AC2 - Payment3", transactions.get(1).getDescription());
+        assertEquals("AC2 - Payment3", transactions.get(0).getDescription());
+        assertEquals("AC2 - Payment2", transactions.get(1).getDescription());
 
         transactions = bank.getTransactionsSorted("Account3", true);
         assertEquals(2, transactions.size());

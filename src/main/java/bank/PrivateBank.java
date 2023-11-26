@@ -7,12 +7,10 @@ import com.google.gson.reflect.TypeToken;
 
 import java.io.File;
 import java.io.IOException;
-import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.*;
-import java.lang.reflect.Field;
 
 /**
  * Class for a private bank. Implements {@link Bank}.
@@ -130,6 +128,10 @@ public class PrivateBank implements Bank {
         this.outgoingInterest = outgoingInterest;
     }
 
+    public String getDirectoryName() {
+        return directoryName;
+    }
+
     //Constructors
 
     /**
@@ -164,18 +166,17 @@ public class PrivateBank implements Bank {
                 "name='" + name + '\'' +
                 ", incomingInterest=" + incomingInterest +
                 ", outgoingInterest=" + outgoingInterest +
-                ", accountsToTransactions=" + accountsToTransactions +
+                //", accountsToTransactions=" + accountsToTransactions +
                 ", directoryName='" + directoryName + '\'' +
                 '}';
     }
 
-    //TODO: Update equals method
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         PrivateBank that = (PrivateBank) o;
-        return Double.compare(that.incomingInterest, incomingInterest) == 0 && Double.compare(that.outgoingInterest, outgoingInterest) == 0 && Objects.equals(name, that.name) && Objects.equals(accountsToTransactions, that.accountsToTransactions);
+        return Double.compare(that.incomingInterest, incomingInterest) == 0 && Double.compare(that.outgoingInterest, outgoingInterest) == 0 && Objects.equals(name, that.name) && Objects.equals(accountsToTransactions, that.accountsToTransactions) && Objects.equals(directoryName, that.directoryName);
     }
 
     /**
@@ -387,7 +388,14 @@ public class PrivateBank implements Bank {
     }
 
     void writeAccount(String account) throws IOException {
-        if (accountsToTransactions.containsKey(account) && !accountsToTransactions.get(account).isEmpty()) {
+        if (accountsToTransactions.containsKey(account)) {
+            if (accountsToTransactions.get(account).isEmpty()) {
+                Path path = Paths.get(directoryName + "/" + account + ".json");
+                String empty = "";
+                Files.createDirectories(path.getParent());
+                Files.writeString(path, empty);
+                return;
+            }
             String json = gson.toJson(accountsToTransactions.get(account));
             Path path = Paths.get(directoryName + "/" + account + ".json");
             Files.createDirectories(path.getParent());

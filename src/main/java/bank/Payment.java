@@ -108,11 +108,7 @@ public class Payment extends Transaction {
      * @param payment Object that will be copied
      */
     public Payment(Payment payment) {
-        this.date = payment.date;
-        this.amount = payment.amount;
-        this.description = payment.description;
-        this.incomingInterest = payment.incomingInterest;
-        this.outgoingInterest = payment.outgoingInterest;
+        this(payment.date, payment.amount, payment.description, payment.incomingInterest, payment.outgoingInterest);
     }
 
     /**

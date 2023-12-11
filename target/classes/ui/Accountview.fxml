@@ -1,24 +1,24 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.ContextMenu?>
-<?import javafx.scene.control.ListView?>
-<?import javafx.scene.control.MenuItem?>
-<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.AccountController">
     <children>
-        <ListView fx:id="accountListView" layoutX="32.0" layoutY="14.0" prefHeight="311.0" prefWidth="526.0">
+        <ListView fx:id="transactionListView" layoutX="32.0" layoutY="14.0" prefHeight="311.0" prefWidth="526.0">
             <contextMenu>
                 <ContextMenu>
                     <items>
-                        <MenuItem fx:id="auswählenButton" mnemonicParsing="false" onAction="#viewAccountEvent" text="Auswählen" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                        <MenuItem fx:id="deleteAccountButton" mnemonicParsing="false" onAction="#deleteAccountEvent" text="Löschen" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
-                  <MenuItem mnemonicParsing="false" text="Unspecified Action" />
+                        <MenuItem mnemonicParsing="false" onAction="#deleteTransactionEvent" text="Löschen" />
+                        <MenuItem mnemonicParsing="false" onAction="#getAscendingTransactions" text="Aufsteigende Sortierung" />
+                        <MenuItem mnemonicParsing="false" onAction="#getDescendingTransactions" text="Absteigende Sortierung" />
+                        <MenuItem mnemonicParsing="false" onAction="#getPositiveTransactions" text="Positive Transaktionen" />
+                        <MenuItem mnemonicParsing="false" onAction="#getNegativeTransactions" text="Negative Transaktionen" />
                     </items>
                 </ContextMenu>
             </contextMenu>
         </ListView>
+      <Button layoutX="227.0" layoutY="348.0" mnemonicParsing="false" onAction="#setMainView" text="Back" />
+      <Button layoutX="300.0" layoutY="348.0" mnemonicParsing="false" onAction="#addTransaction" text="Add Transaction" />
     </children>
 </AnchorPane>

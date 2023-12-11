@@ -13,6 +13,7 @@ import javafx.scene.control.*;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,6 +28,9 @@ public class AccountController extends Controller implements Initializable {
     private ListView<Transaction> transactionListView;
 
     AtomicReference<Transaction> selectedTransaction = new AtomicReference<>();
+
+    @FXML
+    public Text balanceText;
 
     enum SortType {
         ASCENDING,
@@ -53,8 +57,10 @@ public class AccountController extends Controller implements Initializable {
     public void updateTransactions() {
         transactionList.clear();
         List<Transaction> transactions = new ArrayList<>();
-        if (bank.getTransactions(FxApplication.currentAccount) == null)
+        if (bank.getTransactions(FxApplication.currentAccount) == null) {
+            balanceText.setText("Account balance: 0");
             return;
+        }
         switch (currentSort) {
             case ASCENDING:
                 transactions = bank.getTransactionsSorted(FxApplication.currentAccount, true);
@@ -70,6 +76,7 @@ public class AccountController extends Controller implements Initializable {
                 break;
         }
         transactionList.addAll(transactions);
+        balanceText.setText("Account balance: " + String.valueOf(bank.getAccountBalance(FxApplication.currentAccount)));
     }
 
     public void onClickedTransactionsListView(Event event) {
@@ -257,7 +264,7 @@ public class AccountController extends Controller implements Initializable {
             alert.showAndWait();
             return;
         }
-        if (Double.parseDouble(amount)< 0) {
+        if (Double.parseDouble(amount) < 0) {
             alert.setContentText("Amount cannot be negative");
             alert.showAndWait();
             return;

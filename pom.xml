@@ -2,7 +2,7 @@
 <project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xmlns="http://maven.apache.org/POM/4.0.0"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <artifactId>OOS-P4</artifactId>
+    <artifactId>OOS-P5</artifactId>
     <build>
         <plugins>
             <plugin>
@@ -21,6 +21,14 @@
                 <groupId>org.apache.maven.plugins</groupId>
                 <version>2.22.2</version>
             </plugin>
+            <plugin>
+                <artifactId>javafx-maven-plugin</artifactId>
+                <groupId>org.openjfx</groupId>
+                <version>${javafx.maven.plugin.version}</version>
+                <configuration>
+                    <mainClass>ui.FxApplication</mainClass>
+                </configuration>
+            </plugin>
         </plugins>
     </build>
 
@@ -36,6 +44,16 @@
             <version>2.10</version>
         </dependency>
         <dependency>
+            <artifactId>javafx-controls</artifactId>
+            <groupId>org.openjfx</groupId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
+            <artifactId>javafx-fxml</artifactId>
+            <groupId>org.openjfx</groupId>
+            <version>${javafx.version}</version>
+        </dependency>
+        <dependency>
             <groupId>commons-io</groupId>
             <artifactId>commons-io</artifactId>
             <version>2.11.0</version>
@@ -49,7 +67,7 @@
                 <groupId>org.junit</groupId>
                 <scope>import</scope>
                 <type>pom</type>
-                <version>5.9.1</version>
+                <version>5.8.0</version>
             </dependency>
         </dependencies>
     </dependencyManagement>
@@ -61,5 +79,7 @@
     <properties>
         <maven.compiler.release>21</maven.compiler.release>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <javafx.version>19</javafx.version>
+        <javafx.maven.plugin.version>0.0.6</javafx.maven.plugin.version>
     </properties>
 </project>

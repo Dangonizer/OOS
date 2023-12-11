@@ -276,6 +276,30 @@ public class PrivateBank implements Bank {
     }
 
     /**
+     * Deletes an Account with all transactions
+     *
+     * @param account the account that is deleted
+     * @throws AccountDoesNotExistException if the specified account does not exist
+     */
+    public void deleteAccount(String account) throws AccountDoesNotExistException, IOException {
+        if (!accountsToTransactions.containsKey(account))
+            throw new AccountDoesNotExistException("Error: Account " + account + " does not exist.");
+        else {
+            accountsToTransactions.remove(account);
+            File file = new File(directoryName + "/" + account + ".json");
+            file.delete();
+        }
+    }
+
+    public List<String> getAllAccounts() {
+        List<String> accounts = new ArrayList<String>();
+        for (String account : accountsToTransactions.keySet()) {
+            accounts.add(account);
+        }
+        return accounts;
+    }
+
+    /**
      * Checks whether the specified transaction for a given account exists.
      *
      * @param account     the account from which the transaction is checked

@@ -32,7 +32,7 @@ public class MainController extends Controller implements Initializable {
     @FXML
     private ListView<String> accountListView;
 
-    AtomicReference<String> selectedAccount = new AtomicReference<>();
+    String selectedAccount;
 
     @FXML
     private Button addAccountButton;
@@ -54,8 +54,8 @@ public class MainController extends Controller implements Initializable {
     private void onClickedAccountsListView(MouseEvent mouseEvent) {
         if (accountListView.getSelectionModel().getSelectedItem() == null)
             return;
-        selectedAccount.set(String.valueOf(
-                accountListView.getSelectionModel().getSelectedItem()));
+        selectedAccount =String.valueOf(
+                accountListView.getSelectionModel().getSelectedItem());
     }
 
     public void updateAccountList() {
@@ -112,7 +112,7 @@ public class MainController extends Controller implements Initializable {
 
     @FXML
     public void viewAccountEvent(Event event) throws IOException {
-        FxApplication.currentAccount = selectedAccount.get().replace("[", "").replace("]", "");
+        FxApplication.currentAccount = selectedAccount.replace("[", "").replace("]", "");
         FXMLLoader fxmlLoader = new FXMLLoader(FxApplication.class.getResource("Accountview.fxml"));
         Scene scene = new Scene(fxmlLoader.load());
         FxApplication.primaryStage.setScene(scene);
@@ -125,13 +125,13 @@ public class MainController extends Controller implements Initializable {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Delete Account");
-        alert.setContentText("Delete account " + selectedAccount.get().replace("[", "").replace("]", ""));
+        alert.setContentText("Delete account " + selectedAccount.replace("[", "").replace("]", ""));
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() != ButtonType.OK) {
             return;
         } else {
             try {
-                bank.deleteAccount(selectedAccount.get().replace("[", "").replace("]", ""));
+                bank.deleteAccount(selectedAccount.replace("[", "").replace("]", ""));
                 updateAccountList();
             } catch (Exception e) {
                 e.printStackTrace();

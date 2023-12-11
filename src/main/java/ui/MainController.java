@@ -1,11 +1,8 @@
 package ui;
 
 import bank.PrivateBank;
-import bank.exceptions.AccountAlreadyExistsException;
-import bank.exceptions.AccountDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.event.ActionEvent;
 import javafx.event.Event;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -14,29 +11,42 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
-import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.Comparator;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Controller for mainview
+ */
 public class MainController extends Controller implements Initializable {
 
-
+    /**
+     * Observable list for all accounts
+     */
     private ObservableList<String> accountList = FXCollections.observableArrayList();
 
+    /**
+     * JavaFX ListView element
+     */
     @FXML
     private ListView<String> accountListView;
 
+    /**
+     * Currently selected account
+     */
     String selectedAccount;
 
-    @FXML
-    private Button addAccountButton;
+    //@FXML
+    //private Button addAccountButton;
 
+    /**
+     * Initializes the controller
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
@@ -51,6 +61,10 @@ public class MainController extends Controller implements Initializable {
         accountListView.setOnMouseClicked(this::onClickedAccountsListView);
     }
 
+    /**
+     * Sets selectedAccount to the selected item in the ListView
+     * @param mouseEvent
+     */
     private void onClickedAccountsListView(MouseEvent mouseEvent) {
         if (accountListView.getSelectionModel().getSelectedItem() == null)
             return;
@@ -58,12 +72,19 @@ public class MainController extends Controller implements Initializable {
                 accountListView.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Updates observable list with current accounts
+     */
     public void updateAccountList() {
         accountList.clear();
         accountList.addAll(bank.getAllAccounts());
         accountList.sort(Comparator.naturalOrder());
     }
 
+    /**
+     * Opens a dialog to add a new account
+     * @param event
+     */
     @FXML
     public void addAccount(Event event) {
         Dialog<String> dialog = new Dialog<>();
@@ -85,13 +106,17 @@ public class MainController extends Controller implements Initializable {
         dialog.setResultConverter(dialogButton -> {
             if (dialogButton == buttonTypeOk) {
                 tryAddAccount(tName.getText());
-                return tName.getText();
+                //return tName.getText();
             }
             return null;
         });
         dialog.show();
     }
 
+    /**
+     * Checks user input for account for errors and adds account if no errors are found
+     * @param name Account name to be added
+     */
     public void tryAddAccount(String name) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
 
@@ -110,6 +135,11 @@ public class MainController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Sets current account in FxApplication class and changes scene to AccountView
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void viewAccountEvent(Event event) throws IOException {
         FxApplication.currentAccount = selectedAccount.replace("[", "").replace("]", "");
@@ -120,10 +150,14 @@ public class MainController extends Controller implements Initializable {
         return;
     }
 
+    /**
+     * Deletes selected account
+     * @param event
+     */
     @FXML
     public void deleteAccountEvent(Event event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
-        Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+        //Alert errorAlert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Delete Account");
         alert.setContentText("Delete account " + selectedAccount.replace("[", "").replace("]", ""));
         Optional<ButtonType> result = alert.showAndWait();

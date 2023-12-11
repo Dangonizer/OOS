@@ -1,17 +1,14 @@
 package ui;
 
 import bank.*;
-import bank.exceptions.AccountDoesNotExistException;
-import bank.exceptions.TransactionDoesNotExistException;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.Event;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.layout.GridPane;
 import javafx.scene.text.Text;
 
@@ -21,17 +18,36 @@ import java.util.List;
 import java.util.Optional;
 import java.util.concurrent.atomic.AtomicReference;
 
+/**
+ * Controller for accountview
+ */
 public class AccountController extends Controller implements Initializable {
+
+    /**
+     * Observable list for all transactions
+     */
     private ObservableList<Transaction> transactionList = FXCollections.observableArrayList();
 
+    /**
+     * JavaFX ListView element
+     */
     @FXML
     private ListView<Transaction> transactionListView;
 
+    /**
+     * Currently selected transaction
+     */
     AtomicReference<Transaction> selectedTransaction = new AtomicReference<>();
 
+    /**
+     * Text element that shows account balance
+     */
     @FXML
     public Text balanceText;
 
+    /**
+     * Enum for sorting state
+     */
     enum SortType {
         ASCENDING,
         DESCENDING,
@@ -39,8 +55,16 @@ public class AccountController extends Controller implements Initializable {
         NEGATIVE
     }
 
+    /**
+     * Current sorting state
+     */
     SortType currentSort = SortType.ASCENDING;
 
+    /**
+     * Initializes the controller
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(java.net.URL location, java.util.ResourceBundle resources) {
         try {
@@ -54,6 +78,9 @@ public class AccountController extends Controller implements Initializable {
         transactionListView.setOnMouseClicked(this::onClickedTransactionsListView);
     }
 
+    /**
+     * Updates the transaction list and balance with the current information from the bank
+     */
     public void updateTransactions() {
         transactionList.clear();
         List<Transaction> transactions = new ArrayList<>();
@@ -79,12 +106,20 @@ public class AccountController extends Controller implements Initializable {
         balanceText.setText("Account balance: " + String.valueOf(bank.getAccountBalance(FxApplication.currentAccount)));
     }
 
+    /**
+     * Sets selectedTransaction to the selected item in the ListView
+     * @param event
+     */
     public void onClickedTransactionsListView(Event event) {
         if (transactionListView.getSelectionModel().getSelectedItem() == null)
             return;
         selectedTransaction.set(transactionListView.getSelectionModel().getSelectedItem());
     }
 
+    /**
+     * Deletes transaction after confirmation through alert
+     * @param event
+     */
     @FXML
     public void deleteTransactionEvent(Event event) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
@@ -101,30 +136,51 @@ public class AccountController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Sorts transactions ascending
+     * @param event
+     */
     @FXML
     public void getAscendingTransactions(Event event) {
         currentSort = SortType.ASCENDING;
         updateTransactions();
     }
 
+    /**
+     * Sorts transactions descending
+     * @param event
+     */
     @FXML
     public void getDescendingTransactions(Event event) {
         currentSort = SortType.DESCENDING;
         updateTransactions();
     }
 
+    /**
+     * Shows only positive transactions (calculated amount)
+     * @param event
+     */
     @FXML
     public void getPositiveTransactions(Event event) {
         currentSort = SortType.POSITIVE;
         updateTransactions();
     }
 
+    /**
+     * Shows only negative transactions (calculated amount)
+     * @param event
+     */
     @FXML
     public void getNegativeTransactions(Event event) {
         currentSort = SortType.NEGATIVE;
         updateTransactions();
     }
 
+    /**
+     * Changes scene to Mainview
+     * @param event
+     * @throws IOException
+     */
     @FXML
     public void setMainView(Event event) throws IOException {
         FXMLLoader fxmlLoader = new FXMLLoader(FxApplication.class.getResource("Mainview.fxml"));
@@ -134,6 +190,10 @@ public class AccountController extends Controller implements Initializable {
         return;
     }
 
+    /**
+     * Adds transaction trough user input. Asks for payment or transfer.
+     * @param event
+     */
     @FXML
     public void addTransaction(Event event) {
         Dialog<ButtonType> dialog = new Dialog<>();
@@ -150,6 +210,9 @@ public class AccountController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Adds payment through user input
+     */
     public void addPayment() {
         Dialog<Payment> dialog = new Dialog<>();
         dialog.getDialogPane().setMinWidth(350);
@@ -184,6 +247,9 @@ public class AccountController extends Controller implements Initializable {
         dialog.show();
     }
 
+    /**
+     * Adds transfer through user input
+     */
     public void addTransfer() {
         Dialog<Transfer> dialog = new Dialog<>();
         dialog.getDialogPane().setMinWidth(350);
@@ -226,6 +292,12 @@ public class AccountController extends Controller implements Initializable {
         dialog.show();
     }
 
+    /**
+     * Checks user input for payment for errors and adds payment if no errors are found
+     * @param date Date of payment
+     * @param amount Amount of payment
+     * @param description Description of payment
+     */
     public void tryAddPayment(String date, String amount, String description) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         if (date == null || date.isEmpty()) {
@@ -252,6 +324,14 @@ public class AccountController extends Controller implements Initializable {
         }
     }
 
+    /**
+     * Checks user input for transfer for errors and adds transfer if no errors are found
+     * @param date Date of transfer
+     * @param amount Amount of transfer
+     * @param description Description of transfer
+     * @param sender Sender of transfer
+     * @param recipient Recipient of transfer
+     */
     public void tryAddTransfer(String date, String amount, String description, String sender, String recipient) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         if (date == null || date.isEmpty()) {

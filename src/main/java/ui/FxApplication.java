@@ -13,6 +13,9 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * Entrypoint for GUI
+ */
 public class FxApplication extends Application {
 
     public static Stage primaryStage;

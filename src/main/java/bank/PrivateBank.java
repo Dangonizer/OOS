@@ -231,6 +231,7 @@ public class PrivateBank implements Bank {
      */
     @Override
     public void addTransaction(String account, Transaction transaction) throws TransactionAlreadyExistException, AccountDoesNotExistException, TransactionAttributeException, IOException {
+        System.out.println(accountsToTransactions);
         if (!accountsToTransactions.containsKey(account))
             throw new AccountDoesNotExistException("Error: Account " + account + " does not exist.");
         if (transaction instanceof Payment p) {
@@ -239,6 +240,8 @@ public class PrivateBank implements Bank {
             else {
                 p.setIncomingInterest(incomingInterest);
                 p.setOutgoingInterest(outgoingInterest);
+                if (accountsToTransactions.get(account) == null)
+                    accountsToTransactions.put(account, new ArrayList<Transaction>());
                 if (accountsToTransactions.get(account).contains(transaction))
                     throw new TransactionAlreadyExistException("Error: Transaction already exists.");
                 accountsToTransactions.get(account).add(p);
@@ -247,6 +250,8 @@ public class PrivateBank implements Bank {
         if (transaction instanceof Transfer t) {
             if (t.getAmount() < 0)
                 throw new TransactionAttributeException("Error: Invalid value for interest rates.");
+            if (accountsToTransactions.get(account) == null)
+                accountsToTransactions.put(account, new ArrayList<Transaction>());
             if (accountsToTransactions.get(account).contains(transaction))
                 throw new TransactionAlreadyExistException("Error: Transaction already exists.");
             accountsToTransactions.get(account).add(t);
